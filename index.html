@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Ruch koła</title>
+</head>
+
+<body>
+<canvas id="canvas" width="800" height="800"></canvas>
+
+
+<script>
+const canvas=document.getElementById("canvas") ; 
+const ctx=canvas.getContext("2d");
+const c_width=800
+const c_height=800
+var Max_particles=800;
+
+    var particles=[];    
+    var create= function()
+    {
+        if(particles.length>Max_particles)
+            {
+                particles.shift();
+            }
+    var red=Math.floor(Math.random()*255);
+    var green=Math.floor(Math.random()*255);
+    var blue=Math.floor(Math.random()*255);
+    var alpha=Math.random()
+    var p= {
+        x:Math.random() *c_width,
+        y:Math.random() *c_height,
+        xVel:(Math.random()-0.5),
+        yVel:(Math.random()-0.5),
+        radius:Math.random()*20,
+        color:"white"
+    }  
+    
+    particles.push(p);
+ 
+    }  
+    
+    var fade = function()
+    {
+        particles.forEach(function(p)
+        {
+            p.radius*=0.99;
+        }) ;
+        
+    }
+    
+    var loop = function()
+    {
+        create();
+         fade();
+         move();
+        rysuje();
+        
+       
+    window.requestAnimationFrame(loop);
+    }
+    var move = function()
+    {
+        particles.forEach(function(p)
+        {
+            p.x+=p.xVel
+            p.y+=p.yVel
+        })
+        
+    }
+    
+    var rysuje= function()
+    {
+        
+        ctx.clearRect(0,0,c_width,c_height)
+         ctx.beginPath();    
+        ctx.fillStyle="black"
+        ctx.fillRect(0,0,c_width,c_height)
+        ctx.fill()
+        particles.forEach(function(p)
+        { 
+        ctx.beginPath();    
+     ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+    ctx.fillStyle=p.color;
+     ctx.fill();
+         }
+         )
+   
+    }
+    
+ 
+    
+    loop()
+    
+</script>
+</body>
+
+
+
+</html>
